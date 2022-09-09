@@ -47,5 +47,9 @@ export default styles = StyleSheet.create({
     price: {
         fontSize: 16,
         fontWeight: 'bold',
-    }
+    },
+    buttonTop: {
+        textAlign: 'center',
+        marginTop: 15,
+    },
 });

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
-import { View, Text, Pressable, ActivityIndicator, Image } from 'react-native'
+import { View, Text, Pressable, ActivityIndicator, Image, Alert } from 'react-native'
 import styles from './styles'
 import {AntDesign} from '@expo/vector-icons'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { DataStore } from 'aws-amplify'
 import { Dish } from '../../models'
+import { useBasketContext } from '../../contexts/BasketContext'
  
 const DishDetailsScreen = () => {
 
@@ -16,11 +17,19 @@ const DishDetailsScreen = () => {
     const route = useRoute();
     const id = route.params?.id;
 
+    const {addDishToBasket} = useBasketContext();
+
     useEffect(() => {
         if(id){
             DataStore.query(Dish, id).then(setDish);
         }
     }, [id]);
+
+    const onAddToBasket = async () => {
+        await addDishToBasket(dish, quantity)
+        navigation.goBack();
+        Alert.alert(dish.name + ' has been added to basket');
+    }   
 
     const onMinus = () => { 
         if (quantity > 1) {
@@ -29,6 +38,7 @@ const DishDetailsScreen = () => {
             alert('Minimum quantity must be one');
         }
     }
+
     const onPlus = () => { 
         setQuantity(quantity + 1);
     }
@@ -36,6 +46,7 @@ const DishDetailsScreen = () => {
     const getTotal = () =>{
         return (dish.price * quantity).toFixed(2);
     }
+
 
     if(!dish){
         return <ActivityIndicator style={{margin: "auto", paddingTop: 50, flex: 1}} size={30} color="#e36600" />
@@ -64,9 +75,14 @@ const DishDetailsScreen = () => {
                 <Text style={styles.quantity}>{quantity}</Text>
                 <AntDesign onPress={onPlus} name='pluscircle' size={60} color='black' />
             </View>
+            <Text style={styles.buttonTop}> Added  <Text style={styles.qty}>{quantity}</Text> item(s) to the Basket &#8226; <Text style={styles.price}>($ { getTotal() })</Text></Text>
   
-            <Pressable onPress={() => navigation.navigate("Basket")} style={styles.buttonContainer}>
-                <Text style={styles.buttonText}>Added  <Text style={styles.qty}>{quantity}</Text> item(s) to the Basket &#8226; <Text style={styles.price}>($ { getTotal() })</Text></Text>
+            <Pressable 
+                onPress={onAddToBasket}
+                //onPress={() => navigation.navigate("Basket")} 
+                style={styles.buttonContainer}>
+
+                <Text style={styles.buttonText}> Add To Basket</Text>
             </Pressable>
         </View>
     )

@@ -40,4 +40,15 @@ export default styles = StyleSheet.create({
         top: 40,
         left: 10,
     },
+    buttonContainer:{
+        backgroundColor: 'black',
+        marginTop: "auto",
+        padding: 20,
+        alignItems: 'center',
+        margin: 40,
+    },
+    buttonText:{
+        color: 'white',
+        fontSize: 16,
+    },
 });
