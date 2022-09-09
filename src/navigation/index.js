@@ -9,7 +9,7 @@ import DishDetailsScreen from '../screens/DishDetailsScreen'
 import BasketScreen from "../screens/BasketScreen";
 import {Foundation, FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 import { useAuthContext } from "../contexts/AuthContext";
-
+import SuccessOrderScreen from "../screens/SuccessOrderScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -69,6 +69,7 @@ const HomeStackNavigator = () => {
             <HomeStack.Screen name="Restaurant" component={RestaurantDetailsScreen} options={{headerShown: false}}  />
             <HomeStack.Screen name="Dish" component={DishDetailsScreen} />
             <HomeStack.Screen name="Basket" component={BasketScreen} />
+            <HomeStack.Screen name="Success Order" component={SuccessOrderScreen} options={{headerShown: false}}  />
         </HomeStack.Navigator>
 
     )
