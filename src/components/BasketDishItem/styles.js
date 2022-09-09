@@ -4,7 +4,7 @@ export default styles = StyleSheet.create({
     container: {
         flex: 1,
         width: '100%',
-        marginTop: 10,
+        marginTop: 100,
     },
     title: {
         fontSize: 35,
@@ -49,7 +49,7 @@ export default styles = StyleSheet.create({
         fontWeight: '500',
     },
     total: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: '600',
     },
     totalPrice: {

@@ -6,7 +6,7 @@ import DishListItem from '../../components/DishListItem'
 import Header from './Header'
 import styles from './styles'
 import { DataStore } from 'aws-amplify'
-import { Restaurant, Dish } from '../../models'
+import { Restaurant, Dish} from '../../models'
 import { useBasketContext } from '../../contexts/BasketContext'
 
 
@@ -17,7 +17,7 @@ const RestaurantDetailsScreen = () => {
     const route = useRoute();
     const id = route.params?.id;
 
-    const {setRestaurant: setBasketRestaurant} = useBasketContext();
+    const {setRestaurant: setBasketRestaurant, basket, basketDishes} = useBasketContext();
 
     useEffect(()=> {
         if(!id){
@@ -61,14 +61,22 @@ const RestaurantDetailsScreen = () => {
                 color="white"
                 style={styles.iconContainer}
             />
+            {
+                basketDishes.length === 0 ? 
+                (<Text style={{textAlign: 'center', marginVertical: 15}}> You haven't selected any food from this restaurant</Text>) 
+                : (<Text></Text>)
+            }
+            {
+                basket && (
+                    <Pressable 
+                        //onPress={onAddToBasket}
+                        onPress={() => navigation.navigate("Basket")} 
+                        style={styles.buttonContainer}>
 
-            <Pressable 
-                //onPress={onAddToBasket}
-                //onPress={() => navigation.navigate("Basket")} 
-                style={styles.buttonContainer}>
-
-                <Text style={styles.buttonText}> Add To Basket</Text>
-            </Pressable>
+                        <Text style={styles.buttonText}> Proceed to Basket ({basketDishes.length}) </Text>
+                    </Pressable>
+                )
+            }
         </View>
     )
 }

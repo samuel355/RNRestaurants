@@ -43,12 +43,13 @@ export default styles = StyleSheet.create({
     buttonContainer:{
         backgroundColor: 'black',
         marginTop: "auto",
-        padding: 20,
+        padding: 10,
         alignItems: 'center',
-        margin: 40,
+        marginHorizontal: 70,
+        marginBottom: 15
     },
     buttonText:{
         color: 'white',
-        fontSize: 16,
+        fontSize: 14,
     },
 });
