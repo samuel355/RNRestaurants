@@ -24,7 +24,7 @@ function App() {
                 </BasketContextProvider>
             </AuthContextProvider>
 
-            <StatusBar style="light" />
+            <StatusBar style="dark" />
           
         </NavigationContainer>
     );
