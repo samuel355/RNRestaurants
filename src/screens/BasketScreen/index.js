@@ -32,7 +32,7 @@ const BasketScreen = () => {
             </View>
 
             <View style={styles.buttonContainer}>
-                <Text style={styles.buttonText}>PAY &#8226; $ {totalPrice.toFixed(2)} </Text>
+                <Text style={styles.buttonText}>ORDER &#8226; $ {totalPrice.toFixed(2)} </Text>
             </View>
         </View>
     )
