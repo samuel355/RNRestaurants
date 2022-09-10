@@ -1,88 +1,54 @@
-import { View, Text, StyleSheet, Image, FlatList} from 'react-native'
-import React from 'react'
-import orders from '../../../assets/data/orders.json'
-import restaurants from '../../../assets/data/restaurants.json'
+import { View, Text, Image, FlatList, ActivityIndicator } from "react-native";
+import BasketDishItem from "../../components/BasketDishItem";
 
-const orderDetail = orders[0]
+import orders from "../../../assets/data/orders.json";
+import restaurants from "../../../assets/data/restaurants.json";
 
-const OrderDetailsScreen = () => {
-    return (
-        <View style={styles.container}>
-            <Image 
-                source={{uri: orderDetail.Restaurant.image}}
-                style={styles.image}
-            />
-            <View style={styles.textContainer}>
-                <Text style={styles.header}>{orderDetail.User.name} - {orderDetail.User.address}</Text>
-                <Text>New &#8226; date</Text>
-                <Text style={styles.heading}>Your Order</Text>
+import styles from "./styles";
+import { useOrderContext } from "../../contexts/OrderContext";
+import { useEffect, useState } from "react";
+import { useRoute } from "@react-navigation/native";
+
+const order = orders[0];
+
+const OrderDetailsHeader = ({ order }) => {
+  return (
+    <View>
+        <View style={styles.page}>
+            <Image source={{ uri: order.Restaurant.image }} style={styles.image} />
+
+            <View style={styles.container}>
+                <Text style={styles.title}>{order.Restaurant.name}</Text>
+                <Text style={styles.subtitle}>{order.status} &#8226; 2 days ago</Text>
+
+                <Text style={styles.menuTitle}>Your orders</Text>
             </View>
-        
-            <FlatList 
-                data={restaurants[0].dishes}
-                renderItem={({item}) => <OrderDetails ord={item} />}
-            />
         </View>
-    )
-}
+    </View>
+  );
+};
 
-const OrderDetails = ({ord}) => {
-    return (
-        <View style={styles.orderContainer}>
-            <Text style={styles.count}>1</Text>
-            <Text style={styles.orderName}>{ord.name}</Text>
-            <Text style={styles.orderPrice}>$ {ord.price}</Text>
-        </View>
-    )
-}
+const OrderDetails = () => {
+    const [order, setOrder] = useState();
+    const { getOrder } = useOrderContext();
+    const route = useRoute();
+    const id = route.params?.id;
 
-export default OrderDetailsScreen
+    useEffect(() => {
+        getOrder(id).then(setOrder);
+    }, []);
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    image: {
-        width: '100%',
-        aspectRatio: 5 / 3,
-    },
-    textContainer: {
-        margin: 15,
-    },
-    header: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginTop: 10,
-        marginBottom: 10,
-    },
-    heading: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginTop: 10,
-    },
-    orderContainer: {
-        marginLeft: 40,
-        marginRight: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 10,
-    },
-    count: {
-        padding: 8,
-        backgroundColor: '#eee'
-    },
-    orderName:{
-        fontWeight: '300',
-        fontSize: 16,
-        flex: 1,
-        marginLeft: 15,
-    },
-    orderPrice: {
-        fontSize: 16,
-        fontWeight: '400',
-    },
-    underl: {
-        borderBottomWidth: 5,
+    if (!order) {
+        return <ActivityIndicator size={"large"} color="gray" />;
     }
-});
+
+    return (
+        <FlatList
+        ListHeaderComponent={() => <OrderDetailsHeader order={order} />}
+        data={order.dishes}
+        renderItem={({ item }) => <BasketDishItem basketDish={item} />}
+        />
+    );
+};
+
+export default OrderDetails;
