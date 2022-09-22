@@ -10,7 +10,6 @@ const AuthContextProvider = ({children}) => {
     const [authUser, setAuthUser] = useState(null);
     const [dbUser, setDbUser] = useState(null);
     
-    //User ID from cache
     const sub = authUser?.attributes?.sub;
 
     useEffect(() => {
