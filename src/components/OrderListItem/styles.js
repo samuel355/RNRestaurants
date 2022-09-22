@@ -5,19 +5,20 @@ export default styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         margin: 10,
+        borderBottomWidth: 0.3,
+        paddingBottom: 10,
+        borderBottomColor: "grey"
     },
     image:{
         width: 100,
-        height: 100,
+        height: 75,
         marginRight: 10,
-    },
-    textContainer: {
-
+        borderRadius: 10,
     },
     name:{
         fontSize: 16,
         fontWeight: "600",
-        marginBottom: 15,
+        marginBottom: 5,
     },
     count: {
         marginVertical: 5,

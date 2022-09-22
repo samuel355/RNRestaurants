@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Button, Alert } from "react-native";
+import { View, Text, TextInput, Button, Alert, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from './styles'
@@ -15,8 +15,8 @@ const Profile = () => {
 
     const [name, setName] = useState(dbUser?.name || " ");
     const [address, setAddress] = useState(dbUser?.address || " ");
-    const [lat, setLat] = useState(dbUser?.lat + "" || "0.00000");
-    const [lng, setLng] = useState(dbUser?.lng + "" || "0.00000");
+    const [lat, setLat] = useState(dbUser?.lat  || "0.00000");
+    const [lng, setLng] = useState(dbUser?.lng  || "0.00000");
     const navigation = useNavigation();
 
     const createUser = async () => {
@@ -48,50 +48,54 @@ const Profile = () => {
             })
         );
         setDbUser(user);
-        
     }
 
     const onSave = async () => {
         if(dbUser){
             await updateUser();
             Alert.alert("Updated Successfully");
-            navigation.goBack();
+            navigation.navigate('Restaurant');
         }else{
             await createUser();
             Alert.alert("User Details Saved Successfully");
-            navigation.goBack();
+            navigation.navigate('Restaurant');
         }
     };
 
     return (
         <SafeAreaView>
-            <Text style={styles.title}>Profile</Text>
+            <Text style={styles.title}>Profile </Text>
+            <Text style={styles.text}>Full Name</Text>
             <TextInput
                 value={name}
                 onChangeText={setName}
                 placeholder="Name"
                 style={styles.input}
             />
+            <Text style={styles.text}>Address</Text>
             <TextInput
                 value={address}
                 onChangeText={setAddress}
-                placeholder="Address"
                 style={styles.input}
             />
+            <Text style={styles.text}>Latitude</Text>
             <TextInput
                 value={lat}
                 onChangeText={setLat}
-                placeholder="Latitude"
                 style={styles.input}
                 keyboardType="numeric"
             />
+            <Text style={styles.text}>Longitude</Text>
             <TextInput
                 value={lng}
                 onChangeText={setLng}
-                placeholder="Longitude"
                 style={styles.input}
             />
-            <Button onPress={onSave} title={`${dbUser ? 'Update' : 'Save'}`} />
+            
+            <Pressable onPress={onSave} style={styles.updateBtn}>
+                <Text style={{fontWeight: '500', fontSize: 16}}> {`${dbUser ? 'Update' : 'Save'}`} </Text>
+            </Pressable>
+
             {
                 dbUser ? (
                     <Text onPress={()=>Auth.signOut()} style={styles.signOutButton}> Sign Out</Text>
